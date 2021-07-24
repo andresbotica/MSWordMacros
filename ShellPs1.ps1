@@ -1,7 +1,7 @@
 ﻿$Kernel32 = @"
 using System;
 using System.Runtime.InteropServices;
-
+ 
 public class Kernel32{
     [DllImport("kernel32")]
     public static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint fAllocationType, uint flProtect);
